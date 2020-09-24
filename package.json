@@ -1,0 +1,31 @@
+{
+  "name": "sbt-coursier-cache",
+  "version": "1.0.0",
+  "description": "one-liner sbt and coursier cache for GitHub Actions",
+  "scripts": {
+    "build": "ncc build src/save.js --out dist/save --minify && ncc build src/restore.js --out dist/restore --minify"
+  },
+  "keywords": [
+    "github",
+    "action",
+    "sbt",
+    "coursier",
+    "scala",
+    "cache"
+  ],
+  "author": "gvolpe",
+  "license": "MIT",
+  "//dependencies": {},
+  "dependencies": {
+    "@actions/cache": "^0.2.1",
+    "@actions/core": "^1.2.4",
+    "@actions/exec": "^1.0.4",
+    "shasum": "^1.0.2"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.24.1"
+  },
+  "engines": {
+    "npm": ">=6.6"
+  }
+}

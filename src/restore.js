@@ -17,6 +17,7 @@ async function uname() {
   return output.trim();
 }
 
+// this is ugly af but YOLO, it's js anyway
 async function makeHash() {
   fs.readFile('build.sbt', 'utf8', function(e1, c1) {
     fs.readFile('project/plugins.sbt', 'utf8', function(e2, c2) {
@@ -35,8 +36,14 @@ async function makeHash() {
   });
 }
 
-async function sbtRestore(hash) {
-  const os = await uname();
+async function validateCache(key) {
+  if (!key) {
+    core.info("Cache not found");
+    return;
+  }
+}
+
+async function sbtRestore(os, hash) {
   const cachePath = "~/.sbt";
   core.saveState("SBT_CACHE_PATH", cachePath);
 
@@ -50,10 +57,7 @@ async function sbtRestore(hash) {
     restoreKey,
   ]);
 
-  if (!cacheKey) {
-    core.info("Cache not found");
-    return;
-  }
+  validateCache(cacheKey);
 
   core.saveState("SBT_CACHE_RESULT", cacheKey);
   const isExactKeyMatch = primaryKey === cacheKey;
@@ -62,8 +66,7 @@ async function sbtRestore(hash) {
   core.info(`Cache restored from key: ${cacheKey}`);
 }
 
-async function coursierRestore(hash) {
-  const os = await uname();
+async function coursierRestore(os, hash) {
   const cachePath = "~/.cache/coursier";
   core.saveState("CS_CACHE_PATH", cachePath);
 
@@ -77,10 +80,7 @@ async function coursierRestore(hash) {
     restoreKey,
   ]);
 
-  if (!cacheKey) {
-    core.info("Cache not found");
-    return;
-  }
+  validateCache(cacheKey);
 
   core.saveState("CS_CACHE_RESULT", cacheKey);
   const isExactKeyMatch = primaryKey === cacheKey;
@@ -90,9 +90,10 @@ async function coursierRestore(hash) {
 }
 
 async function run() {
+  const os   = await uname();
   const hash = makeHash();
-  coursierRestore(hash);
-  sbtRestore(hash);
+  coursierRestore(os, hash);
+  sbtRestore(os, hash);
 }
 
 run().catch(err => {

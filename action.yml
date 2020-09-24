@@ -1,4 +1,4 @@
-name: 'Scala project cache'
+name: 'sbt-coursier-cache'
 author: 'gvolpe'
 description: 'one-liner sbt and coursier cache for GitHub Actions'
 branding:

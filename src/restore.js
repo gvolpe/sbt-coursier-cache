@@ -79,7 +79,8 @@ async function coursierRestore(os, hash) {
 
 async function run() {
   const os   = await uname();
-  const hash = makeHash();
+  const hash = await makeHash();
+  core.info(`Cache shasum: ${hash}`);
   coursierRestore(os, hash);
   sbtRestore(os, hash);
 }

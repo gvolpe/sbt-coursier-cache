@@ -18,10 +18,10 @@ async function uname() {
 }
 
 async function makeHash() {
-  const c1 = fs.readFileSync('build.sbt');
-  const c2 = fs.readFileSync('project/plugins.sbt');
-  const c3 = fs.readFileSync('project/build.properties');
-  const c4 = fs.readFileSync('project/Dependencies.scala');
+  const c1 = fs.readFileSync('build.sbt', 'utf8');
+  const c2 = fs.readFileSync('project/plugins.sbt', 'utf8');
+  const c3 = fs.readFileSync('project/build.properties', 'utf8');
+  const c4 = fs.readFileSync('project/Dependencies.scala', 'utf8');
   return shasum(c1 || c2 || c3 || c4);
 }
 

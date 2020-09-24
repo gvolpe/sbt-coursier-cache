@@ -1,6 +1,8 @@
 name: 'Scala project cache'
 author: 'gvolpe'
 description: 'one-liner sbt and coursier cache for GitHub Actions'
+icon: 'arrow-down-circle'
+color: 'red'
 runs:
   using: 'node12'
   main: 'dist/restore/index.js'

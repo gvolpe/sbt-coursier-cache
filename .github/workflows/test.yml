@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-18-04
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - run: |
@@ -18,7 +18,9 @@ jobs:
           npm run build
 
   test: # make sure the action works on a clean machine without building
-    runs-on: ubuntu-18-04
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
+      - uses: nixbuild/nix-quick-install-action@v2
       - uses: ./
+      - run: nix-shell --run "sbt compile"

@@ -18,25 +18,14 @@ async function uname() {
 }
 
 async function makeHash() {
-  fs.readFile('build.sbt', 'utf8', function(e1, c1) {
-    fs.readFile('project/plugins.sbt', 'utf8', function(e2, c2) {
-      fs.readFile('project/build.properties', 'utf8', function(e3, c3) {
-        fs.readFile('project/Dependencies.scala', 'utf8', function(e4, c4) {
-          if (!e1 && !e2 && !e3 && !e4) {
-            return shasum(c1 || c2 || c3 || c4);
-          } else if (!e1 && !e2 && !e3) {
-            return shasum(c1 || c2 || c3);
-          } else {
-            core.setFailed(e1.toString() + e2.toString() + e3.toString());
-          }
-        });
-      });
-    });
-  });
+  const c1 = fs.readFileSync('build.sbt', 'utf8');
+  const c2 = fs.readFileSync('project/plugins.sbt', 'utf8');
+  const c3 = fs.readFileSync('project/build.properties', 'utf8');
+  const c4 = fs.readFileSync('project/Dependencies.scala', 'utf8');
+  return shasum(c1 || c2 || c3 || c4);
 }
 
-async function sbtRestore(hash) {
-  const os = await uname();
+async function sbtRestore(os, hash) {
   const cachePath = "~/.sbt";
   core.saveState("SBT_CACHE_PATH", cachePath);
 
@@ -62,8 +51,7 @@ async function sbtRestore(hash) {
   core.info(`Cache restored from key: ${cacheKey}`);
 }
 
-async function coursierRestore(hash) {
-  const os = await uname();
+async function coursierRestore(os, hash) {
   const cachePath = "~/.cache/coursier";
   core.saveState("CS_CACHE_PATH", cachePath);
 
@@ -90,9 +78,11 @@ async function coursierRestore(hash) {
 }
 
 async function run() {
-  const hash = makeHash();
-  coursierRestore(hash);
-  sbtRestore(hash);
+  const os   = await uname();
+  const hash = await makeHash();
+  core.info(`Cache shasum: ${hash}`);
+  coursierRestore(os, hash);
+  sbtRestore(os, hash);
 }
 
 run().catch(err => {

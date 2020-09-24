@@ -6,7 +6,7 @@ sbt-coursier-cache
 Add this step before running any `sbt` command:
 
 ```yml
-- uses: gvolpe/sbt-coursier-cache@v1
+- uses: gvolpe/sbt-coursier-cache@v1.0
 ```
 
 For example:
@@ -22,7 +22,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - uses: gvolpe/sbt-coursier-cache@v1
+    - uses: gvolpe/sbt-coursier-cache@v1.0
 
     - name: Build Scala project
       run: nix-shell --run "sbt compile"

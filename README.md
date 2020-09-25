@@ -1,6 +1,10 @@
 sbt-coursier-cache
 ==================
 
+**ARCHIVED: Use the official [Coursier cache action](https://github.com/marketplace/actions/coursier-cache-action) instead.**
+
+---
+
 #### one-liner sbt and coursier cache for GitHub Actions
 
 Add this step before running any `sbt` command:
